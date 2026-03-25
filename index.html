@@ -175,6 +175,32 @@
             margin: 1rem auto;
         }
 
+        .typewriter {
+            font-size: 1.1rem;
+            color: #f5b642;
+           
+            max-width: 700px;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            justify-content: center;
+        }
+
+        .typewriter .cursor {
+            display: inline-block;
+            width: 0.15rem;
+            height: 1.25rem;
+            background: #f5b642;
+            animation: blink-cursor 0.7s steps(2) infinite;
+        }
+
+        @keyframes blink-cursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
         .stats-badge {
             background: rgba(245, 182, 66, 0.1);
             border-radius: 60px;
@@ -876,10 +902,14 @@
 
     <main class="container">
         <div class="hero">
-            <h2>High‑Performance Video Colourty <br> & Social Media Engine</h2>
+            <h2 id="typewriter-heading"></h2>
             <div class="hero-highlight">
                 Kabir Media Production — full-scale production house: cinematic colour grading, 
                 viral video editing, scripts that convert, and social media growth that scales.
+            </div>
+            <div class="typewriter">
+                <span id="typewriter-text"></span>
+                <span class="cursor"></span>
             </div>
             <div class="stats-badge">
                 <i class="fas fa-chart-line" style="color: var(--gold);"></i>
@@ -1253,6 +1283,63 @@
         document.querySelectorAll('.animate-on-scroll, .animate-fade-left, .animate-fade-right, .animate-flip, .animate-slide-up').forEach(el => {
             observer.observe(el);
         });
+
+        // Typewriter animation for Main Heading + hero sub-lines
+        const typewriterHeadingEl = document.getElementById('typewriter-heading');
+        const headingText = 'High‑Performance Video Colourty & Social Media Engine';
+
+        const typewriterEl = document.getElementById('typewriter-text');
+        const typeStrings = [
+            'Cinematic videos that dominate feeds.',
+            'Social media growth that converts.',
+            'Brand stories made for virality.',
+            'Editing, color grading, ads, and scale.'
+        ];
+
+        let headingCharIndex = 0;
+        function runTypewriterHeading() {
+            if (!typewriterHeadingEl) return;
+
+            typewriterHeadingEl.textContent = headingText.slice(0, headingCharIndex);
+
+            if (headingCharIndex < headingText.length) {
+                headingCharIndex++;
+                setTimeout(runTypewriterHeading, 80);
+            }
+        }
+
+        let typeIndex = 0;
+        let charIndex = 0;
+        let direction = 1;
+
+        function runTypewriter() {
+            if (!typewriterEl) return;
+
+            const currentText = typeStrings[typeIndex];
+            typewriterEl.textContent = currentText.slice(0, charIndex);
+
+            if (direction === 1) {
+                if (charIndex < currentText.length) {
+                    charIndex++;
+                    setTimeout(runTypewriter, 75);
+                } else {
+                    direction = -1;
+                    setTimeout(runTypewriter, 1400);
+                }
+            } else {
+                if (charIndex > 0) {
+                    charIndex--;
+                    setTimeout(runTypewriter, 40);
+                } else {
+                    direction = 1;
+                    typeIndex = (typeIndex + 1) % typeStrings.length;
+                    setTimeout(runTypewriter, 300);
+                }
+            }
+        }
+
+        runTypewriterHeading();
+        runTypewriter();
     </script>
 </body>
 </html>
